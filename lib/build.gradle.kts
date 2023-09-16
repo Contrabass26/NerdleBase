@@ -22,7 +22,7 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation("com.google.guava:guava:31.1-jre")
 
-    // Javaluator
+    // Javaluator - mathematical expression evaluator
     implementation("com.fathzer:javaluator:3.0.3")
 }
 
@@ -31,6 +31,8 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(17))
     }
+
+    withSourcesJar()
 }
 
 tasks.named<Test>("test") {
@@ -38,6 +40,6 @@ tasks.named<Test>("test") {
     useJUnitPlatform()
 }
 
-tasks.jar {
-    archiveBaseName = "nerdle-base"
+tasks.withType<AbstractArchiveTask> {
+    setProperty("archiveBaseName", "nerdle-base")
 }
