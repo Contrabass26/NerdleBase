@@ -1,6 +1,9 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+
+    // Maven publish
+    id("maven-publish")
 }
 
 version = "1.0.0"
@@ -33,6 +36,27 @@ java {
     }
 
     withSourcesJar()
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Contrabass26/NerdleBase")
+            credentials {
+                username = System.getenv("GPR_USERNAME")
+                password = System.getenv("GPR_TOKEN")
+            }
+        }
+    }
+
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = "com.contrabass"
+            artifactId = "nerdle-base"
+            from(components["java"])
+        }
+    }
 }
 
 tasks.named<Test>("test") {
